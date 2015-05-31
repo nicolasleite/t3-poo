@@ -1,7 +1,12 @@
 package libraryOOP;
 
+import java.io.IOException;
+import java.util.*;
+
 public class Main {
-	private void printMenu() {
+	private static Scanner s;
+
+	private static void printMenu() {
 		System.out.println ("************Library OOP************\n");
 		System.out.println ("List of commands:");
 		System.out.println ("add user \t - Registers new user");
@@ -9,21 +14,21 @@ public class Main {
 		System.out.println ("list books \t - List registred books");
 		System.out.println ("list available books \t - List available books");
 		System.out.println ("search book -n \t - Search book by name");
-		System.out.println ("search book -c \t - Search book by code")
+		System.out.println ("search book -c \t - Search book by code");
 		System.out.println ("loan book \t - Loan book");
 		System.out.println ("return book \n - Return loaned book");
 		System.out.println ("exit \n - Finish execution\n");
 		System.out.print ("Command: ");
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		String cmd="", aux;
-		Scanner s = new Scanner (System.in);
+		s = new Scanner (System.in);
 		Library lib = new Library ();
 
 		while (cmd != "exit") {
 			printMenu();
-			cmd = s.readLine();
+			cmd = s.nextLine();
 
 			switch (cmd) {
 				case "add user":
@@ -44,13 +49,13 @@ public class Main {
 				
 				case "search book -n":
 					System.out.print ("\nName: ");
-					aux = s.readLine();
+					aux = s.nextLine();
 					lib.searchBook ("N", aux);
 					break;
 				
 				case "search book -c":
 					System.out.print ("\nCode: ");
-					aux = s.readLine();
+					aux = s.nextLine();
 					lib.searchBook ("C", aux);
 					break;
 				

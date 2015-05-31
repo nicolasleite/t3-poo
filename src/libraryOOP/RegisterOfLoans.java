@@ -1,9 +1,15 @@
 package libraryOOP;
+
+import java.io.BufferedReader;
+import java.util.*;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
  
 class Loan {
 	private String userName;
 	private String bookName;
-	private boolean isReturned;
+	boolean isReturned;
 	private LocalDateTime dateOfLoan;
 	private LocalDateTime limitDateOfReturning;
  
@@ -46,23 +52,24 @@ class Loan {
 		return limitDateOfReturning;
 	}
  
-	public toString () {
+	public String toString () {
 		return "User: " + userName + "\nBook code: " + bookName + "\nDate of loan: " + dateOfLoan + "\nLimit date of returning the book: " + limitDateOfReturning + "\n";
 	}
  
-	public toStringCSV () {
+	public String toStringCSV () {
 		return userName + "," + bookName + "," + dateOfLoan + "," + limitDateOfReturning;
 	}
 }
  
 public class RegisterOfLoans {
 	List<Loan> loans;
+	private BufferedReader in;
  
 	//construtor with name of file as argument
 	public RegisterOfLoans(String loanFile) {
 		loans = new ArrayList<Loan>();
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(loanFile));
+			in = new BufferedReader(new FileReader(loanFile));
 			String csv;
 			while ((csv = in.readLine()) != null) {
 				loans.add(new Loan(csv));
@@ -75,16 +82,16 @@ public class RegisterOfLoans {
 	}
 
 	//não ta funcionando ainda
-	public void loanBook (String loanfile, String user, String book, LocalDateTime date, String typeOfUser) {
+	public void loanBook (String loanfile, String user, String book, LocalDateTime date, boolean isReturned, String typeOfUser) {
 		RegisterOfLoans rl = new RegisterOfLoans(loanfile);
 		int daysToReturn, i, lateLoans=0, loanedBooks=0;
-		Book aux;
+		Loan aux;
  
 		for (i=0; i<rl.loans.size(); i++) {
 			aux = rl.loans.get(i);
 			if (aux.getUserName() == user && !(aux.isReturned)) {
 				loanedBooks++;
-				if (date.isAfter(aux.getLimitDate)) 
+				if (date.isAfter(aux.getLimitDate())) 
 					lateLoans++;
 			} 
 		}
@@ -101,9 +108,9 @@ public class RegisterOfLoans {
 				break;
 		}
  
-		LocalDateTime returnDate = LocalDateTime.plusDays(daysToReturn);
+/*erro*/LocalDateTime returnDate = LocalDateTime.plusDays(daysToReturn);
  
-		BufferedWritter out = new BufferedWritter(new FileWritter(loanfile, true));
+		BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, true));
 			 
 		out.write (user + "," + book + "," + date + "," + returnDate);  
 	}

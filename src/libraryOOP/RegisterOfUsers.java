@@ -47,7 +47,7 @@ class User {
 	}
 	 
 	public String toString() {
-		return "Nick: " + nick + "\nTipo: " + type + "\nEmprйstimo: " + dateOfLoan + "\n:Suspenзгo:" + punishTime;
+		return "Nick: " + nick + "\nType: " + type + "\nLoan: " + dateOfLoan + "\nSuspension:" + punishTime;
 	}
  
 }
@@ -73,7 +73,7 @@ public class RegisterOfUsers {
 		}
 	}
 
-	public void addNewUser(String nick, String type, String dateOfLoan, String punishTime, String userfile) throws IOException {
+	public static void addNewUser(String nick, String type, String dateOfLoan, String punishTime, String userfile) throws IOException {
 		
 		BufferedWriter out = new BufferedWriter(new FileWriter(userfile, true));
 		out.write(nick + "," + type  + ","  + dateOfLoan + "," + punishTime + "\n");
@@ -81,24 +81,24 @@ public class RegisterOfUsers {
 	}
 
 	public String getUserType(String userfile, String user) {
-		ru = new RegisterOfUsers (userfile);
+		RegisterOfUsers ru = new RegisterOfUsers (userfile);
 
 		ru.users
 			.stream ()
 			.filter (s -> s.getNick().equals(user))
-			.ifPresent (s -> return s.getType());
+/*erro*/	.ifPresent (s -> return s.getType());
 		return "";
 	}
 
 	public boolean loanBook (String userfile, String user, String book, LocalDateTime date) {
-		ru = new RegisterOfUsers (userfile);
+		RegisterOfUsers ru = new RegisterOfUsers (userfile);
 
 		ru.users
 			.stream ()
 			.filter (s -> s.getNick().equals(user))
-			.ifNotPresent (return false)
+/*erro*/	.ifNotPresent (return false)
 			.filter (s -> date.isAfter(s.getDateOfLoan.plusDays(s.getPunishTime())))
-			.ifNotPresent (return false);
+/*erro*/	.ifNotPresent (return false);
 		return true;
 	} 
 /*

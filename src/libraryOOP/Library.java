@@ -1,5 +1,10 @@
 package libraryOOP;
- 
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.io.*;
+
 public class Library {
 	String bookfile;
 	String userfile;
@@ -13,21 +18,21 @@ public class Library {
 		s = new Scanner (System.in);
 	}
  
-	public void newUser() {
+	public void newUser() throws IOException {
 		System.out.print ("Name: ");
-		String name = s.readLine();
+		String name = s.nextLine();
 		System.out.print ("Type: ");
-		String type = s.readLine();
+		String type = s.nextLine();
 		RegisterOfUsers.addNewUser(name, type, "01/01/00", "0", userfile);
 	}
  
 	public void newBook() {
 		System.out.print ("Name: ");
-		String name = s.readLine();
+		String name = s.nextLine();
 		System.out.print ("Code: ");
-		String code = s.readLine();
+		String code = s.nextLine();
 		System.out.print ("Type: ");
-		String type = s.readLine();
+		String type = s.nextLine();
 		 
 		try {
 			RegisterOfBooks.addNewBook (name,code,type,"Available",bookfile);
@@ -48,10 +53,10 @@ public class Library {
 	public void searchBook (String typeOfSearch, String argument) {
 		switch (typeOfSearch) {
 			case "N":
-				RegisterOfBooks.searchByName(bookfile, argument);
+				RegisterOfBooks.searchBookByName(bookfile, argument);
 				break;
 			case "C":
-				RegisterOfBooks.searchByCode(bookfile, argument);
+				RegisterOfBooks.searchBookByCode(bookfile, argument);
 				break;
 			default:
 				System.out.println ("Invalid option!! Usage: (C)ode or (N)ame!!");
@@ -59,14 +64,14 @@ public class Library {
 		}
 		System.out.println("Search completed!!");
 	}
- 
+	
 	public void loanBook() {
 		System.out.print("User: ");
-		String user = s.readLine();
+		String user = s.nextLine();
 		System.out.print("Desired book: ");
-		String book = s.readLine();
+		String book = s.nextLine();
 		System.out.print("Date (dd/mm/yy) [press ENTER to use OS time]: ");
-		String dateString = s.readLine();
+		String dateString = s.nextLine();
  
 		LocalDateTime date;
 		switch (dateString) {
@@ -80,7 +85,7 @@ public class Library {
  
 		try{    
 			//if the user is on period of suspension or doesn't exist loanBook() is stopped 
-			if (!(RegisterOfUsers.loanBook (userfile, user, book))){
+			if (!(RegisterOfUsers.loanBook (userfile, user, book, date))){
 				return;
 			}
 
@@ -106,9 +111,9 @@ public class Library {
 	//not working 
 	public void returnBook() {
 		System.out.print("User: ");
-		String user = s.readLine();
+		String user = s.nextLine();
 		System.out.print("Book to be returned: ");
-		String book = s.readLine();
+		String book = s.nextLine();
  
 		try {
 			RegisterOfUsers.returnBook(userfile, user);

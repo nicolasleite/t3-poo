@@ -48,7 +48,7 @@ class Book {
 		return name + "," + code + "," + type + "," + availability + "\n";
 	}
    
-	public boolean loanBook(typeOfUser) {
+	public boolean loanBook(String typeOfUser) {
 		if (typeOfUser == "Community" && type == "textbook"){
 			System.out.println ("This user doesn't have permission to loan this book!!");
 			return true;
@@ -83,7 +83,7 @@ public class RegisterOfBooks {
 		}
 	}
    
-	public void addNewBook(String name, String code, String type, String availability, String bookfile) throws IOException {
+	public static void addNewBook(String name, String code, String type, String availability, String bookfile) throws IOException {
 		 
 		//não precisa disso aqui não, tava brisando e vai dar erro  
 		//books.add(new Book(name, code, type, availability));
@@ -103,7 +103,7 @@ public class RegisterOfBooks {
    
 	}*/
    
-	public void printEverything (String bookfile) {
+	public static void printEverything (String bookfile) {
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
    
 		rb.books
@@ -112,7 +112,7 @@ public class RegisterOfBooks {
 			.forEach(s -> System.out.print(s.toString() + "\n"));
 	}
    
-	public void printAvailableOnly (String bookfile) {
+	public static void printAvailableOnly (String bookfile) {
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
    
 		rb.books
@@ -122,7 +122,7 @@ public class RegisterOfBooks {
 			.forEach(s -> System.out.print(s.toString() + "\n"));
 	}
    
-	public void searchBookByName (String bookfile, String name){
+	public static void searchBookByName (String bookfile, String name){
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
 		rb.books
 			.stream()
@@ -131,7 +131,7 @@ public class RegisterOfBooks {
 			.forEach(s -> System.out.print(s.toString() + "\n"));
 	}
    
-	public void searchBookByCode (String bookfile, String code){
+	public static void searchBookByCode (String bookfile, String code){
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
 		rb.books
 			.stream()
@@ -140,10 +140,10 @@ public class RegisterOfBooks {
 			.forEach(s -> System.out.print(s.toString() + "\n"));
 	}
    
-	public int loanBook (String bookfile, String name, String typeOfUser) throws IOException {
+	public boolean loanBook (String bookfile, String name, String typeOfUser) throws IOException {
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
 		int i;
-		boolean flag;
+		boolean flag = false;
 		Book aux;
  
 		//false overwrite the file
@@ -154,7 +154,7 @@ public class RegisterOfBooks {
 			.filter(s -> s.getName().equals(name))
 			.findAny()
 			.filter(s -> s.getAvailability().equals("Available"))
-			.ifPresent(s -> (flag = s.loanBook(typeOfUser)));
+/*erro*/	.ifPresent(s -> (flag = s.loanBook(typeOfUser)));
    
 		for (i=0; i<rb.books.size(); i++) {
 			aux = rb.books.get(i);
@@ -187,6 +187,6 @@ public class RegisterOfBooks {
    
 		out.close();
  
-		return rb.getType();
+/*erro*/return rb.getType();
 	}
 }
