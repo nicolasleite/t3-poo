@@ -48,13 +48,13 @@ class Book {
 		return name + "," + code + "," + type + "," + availability + "\n";
 	}
    
-	public int loanBook(typeOfUser) {
+	public boolean loanBook(typeOfUser) {
 		if (typeOfUser == "Community" && type == "textbook"){
 			System.out.println ("This user doesn't have permission to loan this book!!");
-			return 1;
+			return true;
 		}
 		availability = "Unavailable";
-		return 0;
+		return false;
 	}
    
 	public void returnBook() {
@@ -142,7 +142,8 @@ public class RegisterOfBooks {
    
 	public int loanBook (String bookfile, String name, String typeOfUser) throws IOException {
 		RegisterOfBooks rb = new RegisterOfBooks (bookfile);
-		int i, flag;
+		int i;
+		boolean flag;
 		Book aux;
  
 		//false overwrite the file
