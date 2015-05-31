@@ -1,105 +1,122 @@
 package libraryOOP;
  
 public class Library {
-    String bookfile;
-    String userfile;
-    String loanfile;
-    Scanner s;
+	String bookfile;
+	String userfile;
+	String loanfile;
+	Scanner s;
  
-    public Library() {
-        bookfile = "bookfile.csv";
-        userfile = "userfile.csv";
-        loanfile = "loanfile.csv";
-        s = new Scanner (System.in);
-    }
+	public Library() {
+		bookfile = "bookfile.csv";
+		userfile = "userfile.csv";
+		loanfile = "loanfile.csv";
+		s = new Scanner (System.in);
+	}
  
-    public void newUser() {
-        System.out.print ("Name: ");
-        String name = s.readLine();
-        System.out.print ("Type: ");
-        String type = s.readLine();
-    }
+	public void newUser() {
+		System.out.print ("Name: ");
+		String name = s.readLine();
+		System.out.print ("Type: ");
+		String type = s.readLine();
+		RegisterOfUsers.addNewUser(name, type, "01/01/00", "0", userfile);
+	}
  
-    public void newBook() {
-        System.out.print ("Name: ");
-        String name = s.readLine();
-        System.out.print ("Code: ");
-        String code = s.readLine();
-        System.out.print ("Type: ");
-        String type = s.readLine();
-         
-        try {
-            RegisterOfBooks.addNewBook (name,code,type,"Available",bookfile);
-            System.out.println ("Book added successfuly!!");
-        } catch (IOException e) {
-            System.out.println ("Failed to add new book!!");
-        }
-    }
+	public void newBook() {
+		System.out.print ("Name: ");
+		String name = s.readLine();
+		System.out.print ("Code: ");
+		String code = s.readLine();
+		System.out.print ("Type: ");
+		String type = s.readLine();
+		 
+		try {
+			RegisterOfBooks.addNewBook (name,code,type,"Available",bookfile);
+			System.out.println ("Book added successfuly!!");
+		} catch (IOException e) {
+			System.out.println ("Failed to add new book!!");
+		}
+	}
  
-    public void seeAllBooks () {
-        RegisterOfBooks.printEverything (bookfile);
-    }
+	public void seeAllBooks () {
+		RegisterOfBooks.printEverything (bookfile);
+	}
  
-    public void seeAvailableBooks () {
-        RegisterOfBooks.printAvailableOnly (bookfile);
-    }
+	public void seeAvailableBooks () {
+		RegisterOfBooks.printAvailableOnly (bookfile);
+	}
  
-    public void searchBook (String typeOfSearch, String argument) {
-        switch (typeOfSearch) {
-            case "N":
-                RegisterOfBooks.searchByName(bookfile, argument);
-                break;
-            case "C":
-                RegisterOfBooks.searchByCode(bookfile, argument);
-                break;
-            default:
-                System.out.println ("Invalid option!! Usage: (C)ode or (N)ame!!");
-                return;
-        }
-        System.out.println("Search completed!!");
-    }
+	public void searchBook (String typeOfSearch, String argument) {
+		switch (typeOfSearch) {
+			case "N":
+				RegisterOfBooks.searchByName(bookfile, argument);
+				break;
+			case "C":
+				RegisterOfBooks.searchByCode(bookfile, argument);
+				break;
+			default:
+				System.out.println ("Invalid option!! Usage: (C)ode or (N)ame!!");
+				return;
+		}
+		System.out.println("Search completed!!");
+	}
  
-    public void loanBook() {
-        System.out.print("User: ");
-        String user = s.readLine();
-        System.out.print("Desired book: ");
-        String book = s.readLine();
-        System.out.print("Date (dd/mm/yy) [press ENTER to use OS time]: ");
-        String dateString = s.readLine();
+	public void loanBook() {
+		System.out.print("User: ");
+		String user = s.readLine();
+		System.out.print("Desired book: ");
+		String book = s.readLine();
+		System.out.print("Date (dd/mm/yy) [press ENTER to use OS time]: ");
+		String dateString = s.readLine();
  
-        LocalDateTime date;
-        switch (dateString) {
-            case "":
-                date = LocalDateTime.now();
-                break;
-            default:
-                date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd'/'MM'/'yy"));
-                break;
-        }
+		LocalDateTime date;
+		switch (dateString) {
+			case "":
+				date = LocalDateTime.now();
+				break;
+			default:
+				date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd'/'MM'/'yy"));
+				break;
+		}
  
-        try{    
-            RegisterOfUsers.loanBook(userfile, user);
-            RegisterOfBooks.loanBook(bookfile, book);
-            RegisterOfLoans.loanBook(loanfile, user, book, date);
-            System.out.println ("Successful loan!!");
-        } catch (IOException e) {
-            System.out.println ("Unsuccessful loan!!");
-        }
-    }
+		try{    
+			//if the user is on period of suspension or doesn't exist loanBook() is stopped 
+			if (!(RegisterOfUsers.loanBook (userfile, user, book))){
+				return;
+			}
+
+			//returns the type of the user
+			typeOfUser = RegisterOfUsers.getUserType(userfile, user);
+			
+			//if the user doesn't have permission to loan that type of book or the book doesn't exist, loanBook is stopped
+			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser)){
+				return;
+			}
+
+			//if the user has more loaned books than he's allowed to, loanBook is stopped
+			if (!(RegisterOfLoans.loanBook(loanfile, user, book, date)){
+				return;
+			}
+
+			System.out.println ("Successful loan!!");
+		} catch (IOException e) {
+			System.out.println ("Unsuccessful loan!!");
+		}
+	}
+
+	//not working 
+	public void returnBook() {
+		System.out.print("User: ");
+		String user = s.readLine();
+		System.out.print("Book to be returned: ");
+		String book = s.readLine();
  
-    public void returnBook() {
-        System.out.print("User: ");
-        String user = s.readLine();
-        System.out.print("Book to be returned: ");
-        String book = s.readLine();
- 
-        try {
-            RegisterOfUsers.returnBook(userfile, user);
-            RegisterOfBooks.returnBook(bookfile, book);
-            RegisterOfLoans.returnBook(loanfile, user, book);
-            System.out.println ("Successful return!!");
-        } catch (IOException e) {
-            System.out.println ("Unsuccessful return!!");
-        }
-    }
+		try {
+			RegisterOfUsers.returnBook(userfile, user);
+			RegisterOfBooks.returnBook(bookfile, book);
+			RegisterOfLoans.returnBook(loanfile, user, book);
+			System.out.println ("Successful return!!");
+		} catch (IOException e) {
+			System.out.println ("Unsuccessful return!!");
+		}
+	}
 }
