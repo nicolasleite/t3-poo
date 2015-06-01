@@ -98,7 +98,7 @@ public class Library {
 			}
 
 			//if the user has more loaned books than he's allowed to, loanBook is stopped
-			if ((RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser)){
+			if (RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser)){
 				return;
 			}
 
