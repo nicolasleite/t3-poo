@@ -96,6 +96,9 @@ public class RegisterOfLoans {
 					lateLoans++;
 			} 
 		}
+		
+		if (lateLoans > 0) 
+			return false;
 
 		switch (typeOfUser) {
 			case "Community":

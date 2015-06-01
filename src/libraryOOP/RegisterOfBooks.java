@@ -41,7 +41,7 @@ class Book {
     }
     
     public String toString() {
-        return "Nome: " + name + "\nC�digo: " + code + "\nTipo: " + type + "\nDisponibilidade: " + availability;
+        return "Name: " + name + "\nCode: " + code + "\nType: " + type + "\nDisponibility: " + availability;
     }
     
     public String toStringCSV() {
