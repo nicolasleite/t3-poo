@@ -80,7 +80,7 @@ public class RegisterOfUsers {
 		out.close();
 	}
 
-	public String getUserType(String userfile, String user) {
+	public static String getUserType(String userfile, String user) {
 		RegisterOfUsers ru = new RegisterOfUsers (userfile);
 		int i;
 		User aux;
@@ -94,7 +94,7 @@ public class RegisterOfUsers {
 		for (i=0; i<ru.users.size(); i++) {
 			aux = ru.users.get(i);
 			if (aux.getNick() == user){
-				type = aux.getUserType();
+				type = aux.getType();
 				break;
 			}
 		}
@@ -102,7 +102,7 @@ public class RegisterOfUsers {
 		return type;
 	}
 
-	public boolean loanBook (String userfile, String user, String book, LocalDateTime date) {
+	public static boolean loanBook (String userfile, String user, String book, LocalDateTime date) {
 		RegisterOfUsers ru = new RegisterOfUsers (userfile);
 		int i;
 		User aux;
@@ -117,7 +117,7 @@ public class RegisterOfUsers {
 
 		for (i=0; i<ru.users.size(); i++) {
 			aux = ru.users.get(i);
-			if (aux.getNick == user && date.isAfter(aux.getDateOfLoan.plusDays(aux.getPunishTime()))) {
+			if (aux.getNick() == user && date.isAfter(aux.getDateOfLoan().plusDays(aux.getPunishTime()))) {
 				flag = true;
 				break;
 			}
@@ -132,4 +132,9 @@ public static void main(String[] args) throws IOException, FileNotFoundException
 	RegisterOfUsers.addNewUser("NickTest", "TypeTest", "users.csv");
 }
 */
+
+	public static void returnBook(String userfile, String user) {
+		// TODO Auto-generated method stub
+		
+	}
 }

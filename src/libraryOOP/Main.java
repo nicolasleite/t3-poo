@@ -1,7 +1,7 @@
 package libraryOOP;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
 	private static Scanner s;
@@ -63,9 +63,10 @@ public class Main {
 					lib.loanBook();
 					break;
 
-				case "return book":
+				//not working
+				/*case "return book":
 					lib.returnBook();
-					break;
+					break;*/
 
 				default:
 					System.out.println("Invalid command!!");

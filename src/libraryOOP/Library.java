@@ -85,12 +85,12 @@ public class Library {
  
 		try{    
 			//if the user is on period of suspension or doesn't exist loanBook() is stopped 
-			if (!(RegisterOfUsers.loanBook (userfile, user, book, date))){
+			if (RegisterOfUsers.loanBook (userfile, user, book, date) == false){
 				return;
 			}
 
 			//returns the type of the user
-			typeOfUser = RegisterOfUsers.getUserType(userfile, user);
+			String typeOfUser = RegisterOfUsers.getUserType(userfile, user);
 			
 			//if the user doesn't have permission to loan that type of book or the book doesn't exist, loanBook is stopped
 			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser)){
@@ -98,7 +98,7 @@ public class Library {
 			}
 
 			//if the user has more loaned books than he's allowed to, loanBook is stopped
-			if (!(RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser)){
+			if ((RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser)){
 				return;
 			}
 
@@ -109,7 +109,7 @@ public class Library {
 	}
 
 	//not working 
-	public void returnBook() {
+/*	public void returnBook() {
 		System.out.print("User: ");
 		String user = s.nextLine();
 		System.out.print("Book to be returned: ");
@@ -123,5 +123,5 @@ public class Library {
 		} catch (IOException e) {
 			System.out.println ("Unsuccessful return!!");
 		}
-	}
+	}*/
 }

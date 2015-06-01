@@ -1,6 +1,7 @@
 package libraryOOP;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.*;
 import java.io.*;
 import java.time.LocalDateTime;
@@ -81,15 +82,15 @@ public class RegisterOfLoans {
 		}
 	}
 
-	//não ta funcionando ainda
-	public void loanBook (String loanfile, String user, String book, LocalDateTime date, boolean isReturned, String typeOfUser) {
+	public static boolean loanBook (String loanfile, String user, String book, LocalDateTime date, String typeOfUser) throws IOException {
 		RegisterOfLoans rl = new RegisterOfLoans(loanfile);
-		int daysToReturn, i, lateLoans=0, loanedBooks=0;
+		int daysToReturn = 0, i, lateLoans=0, loanedBooks=0;
 		Loan aux;
- 
+		boolean rtn = false;
+		
 		for (i=0; i<rl.loans.size(); i++) {
 			aux = rl.loans.get(i);
-			if (aux.getUserName() == user && !(aux.isReturned)) {
+			if (aux.getUserName() == user && !(aux.isReturned())) {
 				loanedBooks++;
 				if (date.isAfter(aux.getLimitDate())) 
 					lateLoans++;
@@ -108,10 +109,14 @@ public class RegisterOfLoans {
 				break;
 		}
  
-/*erro*/LocalDateTime returnDate = LocalDateTime.plusDays(daysToReturn);
+		LocalDateTime returnDate = date.plusDays(daysToReturn);
  
 		BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, true));
 			 
-		out.write (user + "," + book + "," + date + "," + returnDate);  
+		out.write (user + "," + book + "," + date + "," + returnDate); 
+		
+		out.close();
+		
+		return rtn;
 	}
 }

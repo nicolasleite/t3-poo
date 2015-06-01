@@ -41,7 +41,7 @@ class Book {
     }
     
     public String toString() {
-        return "Nome: " + name + "\nCódigo: " + code + "\nTipo: " + type + "\nDisponibilidade: " + availability;
+        return "Nome: " + name + "\nCï¿½digo: " + code + "\nTipo: " + type + "\nDisponibilidade: " + availability;
     }
     
     public String toStringCSV() {
@@ -85,7 +85,7 @@ public class RegisterOfBooks {
     
     public static void addNewBook(String name, String code, String type, String availability, String bookfile) throws IOException {
           
-        //não precisa disso aqui não, tava brisando e vai dar erro  
+        //nï¿½o precisa disso aqui nï¿½o, tava brisando e vai dar erro  
         //books.add(new Book(name, code, type, availability));
             
         BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, true));
@@ -140,7 +140,7 @@ public class RegisterOfBooks {
             .forEach(s -> System.out.print(s.toString() + "\n"));
     }
     
-    public boolean loanBook (String bookfile, String name, String typeOfUser) throws IOException {
+    public static boolean loanBook (String bookfile, String name, String typeOfUser) throws IOException {
         RegisterOfBooks rb = new RegisterOfBooks (bookfile);
         int i;
         boolean flag = false;
@@ -181,7 +181,8 @@ public class RegisterOfBooks {
         RegisterOfBooks rb = new RegisterOfBooks (bookfile);
         int i;
         Book aux;
-  
+        String rtn = "";
+        
         //false overwrite the file
         BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));
     
@@ -192,14 +193,15 @@ public class RegisterOfBooks {
             .filter(s -> s.getAvailability().equals("Unavailable"))
             .ifPresent(s -> s.returnBook());
           
-        for (i=0; i<rb.books.size(); i++) {
+		for (i=0; i<rb.books.size(); i++) {
             aux = rb.books.get(i);
             out.write(aux.toStringCSV());
+            if (aux.getName() == name)
+            	rtn = aux.getType();
         }
     
         out.close();
          
-        String rtn = rb.getType();
         return rtn;
     }
 }
