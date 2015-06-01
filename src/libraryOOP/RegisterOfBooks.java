@@ -146,22 +146,34 @@ public class RegisterOfBooks {
 		boolean flag = false;
 		Book aux;
  
-		//false overwrite the file
-		BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));
+/*		//false overwrite the file
+		BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));*/
    
-		rb.books
+/*		rb.books
 			.stream()
 			.filter(s -> s.getName().equals(name))
 			.findAny()
 			.filter(s -> s.getAvailability().equals("Available"))
-/*erro*/	.ifPresent(s -> (flag = s.loanBook(typeOfUser)));
+//Error		.ifPresent(s -> (flag = s.loanBook(typeOfUser)));	*/
    
-		for (i=0; i<rb.books.size(); i++) {
+		for (i=0; i<rb.boks.size(); i++) {
 			aux = rb.books.get(i);
-			out.write(aux.toStringCSV());
+			if (aux.getName() == name && aux.getAvailability() == "Available"){
+				flag = aux.loanBook (typeOfUser);
+				break;
+			}
 		}
- 
-		out.close();
+
+		if (flag) {
+			//false overwrite the file
+			BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));
+			for (i=0; i<rb.books.size(); i++) {
+				aux = rb.books.get(i);
+				out.write(aux.toStringCSV());
+			}
+			out.close();
+		}
+
 		return flag;
 	}
    
@@ -186,7 +198,8 @@ public class RegisterOfBooks {
 		}
    
 		out.close();
- 
-/*erro*/return rb.getType();
+ 		
+ 		String rtn = rb.getType();
+		return rtn;
 	}
 }

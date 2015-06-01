@@ -82,24 +82,48 @@ public class RegisterOfUsers {
 
 	public String getUserType(String userfile, String user) {
 		RegisterOfUsers ru = new RegisterOfUsers (userfile);
+		int i;
+		User aux;
+		String type = "";
 
-		ru.users
+		/*ru.users
 			.stream ()
 			.filter (s -> s.getNick().equals(user))
-/*erro*/	.ifPresent (s -> return s.getType());
-		return "";
+/*Error 	.ifPresent (s -> return s.getType());*/
+
+		for (i=0; i<ru.users.size(); i++) {
+			aux = ru.users.get(i);
+			if (aux.getNick() == user){
+				type = aux.getUserType();
+				break;
+			}
+		}
+
+		return type;
 	}
 
 	public boolean loanBook (String userfile, String user, String book, LocalDateTime date) {
 		RegisterOfUsers ru = new RegisterOfUsers (userfile);
+		int i;
+		User aux;
+		boolean flag = false;
 
-		ru.users
+		/*ru.users
 			.stream ()
 			.filter (s -> s.getNick().equals(user))
-/*erro*/	.ifNotPresent (return false)
+/*erro/		.ifNotPresent (return false)
 			.filter (s -> date.isAfter(s.getDateOfLoan.plusDays(s.getPunishTime())))
-/*erro*/	.ifNotPresent (return false);
-		return true;
+/*erro* 	.ifNotPresent (return false);*/
+
+		for (i=0; i<ru.users.size(); i++) {
+			aux = ru.users.get(i);
+			if (aux.getNick == user && date.isAfter(aux.getDateOfLoan.plusDays(aux.getPunishTime()))) {
+				flag = true;
+				break;
+			}
+		}
+
+		return flag;
 	} 
 /*
 static addNewUser
