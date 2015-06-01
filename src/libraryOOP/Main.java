@@ -9,15 +9,15 @@ public class Main {
 	private static void printMenu() {
 		System.out.println ("************Library OOP************\n");
 		System.out.println ("List of commands:");
-		System.out.println ("add user \t - Registers new user");
-		System.out.println ("add book \t - Registers new book");
-		System.out.println ("list books \t - List registred books");
+		System.out.println ("add user \t\t - Registers new user");
+		System.out.println ("add book \t\t - Registers new book");
+		System.out.println ("list books \t\t - List registred books");
 		System.out.println ("list available books \t - List available books");
-		System.out.println ("search book -n \t - Search book by name");
-		System.out.println ("search book -c \t - Search book by code");
-		System.out.println ("loan book \t - Loan book");
-		System.out.println ("return book \n - Return loaned book");
-		System.out.println ("exit \n - Finish execution\n");
+		System.out.println ("search book -n \t\t - Search book by name");
+		System.out.println ("search book -c \t\t - Search book by code");
+		System.out.println ("loan book \t\t - Loan book");
+		System.out.println ("return book \t\t - Return loaned book");
+		System.out.println ("exit \t\t\t - Finish execution\n");
 		System.out.print ("Command: ");
 	}
 
@@ -26,7 +26,7 @@ public class Main {
 		s = new Scanner (System.in);
 		Library lib = new Library ();
 
-		while (cmd != "exit") {
+		do {
 			printMenu();
 			cmd = s.nextLine();
 
@@ -70,8 +70,9 @@ public class Main {
 
 				default:
 					System.out.println("Invalid command!!");
-					break;
-			}
-		} 
+			} 
+		} while (cmd != "exit");
+		
+		System.out.println ("Finished execution");
 	}
 }

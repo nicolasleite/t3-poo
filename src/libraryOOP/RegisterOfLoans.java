@@ -84,9 +84,8 @@ public class RegisterOfLoans {
 
 	public static boolean loanBook (String loanfile, String user, String book, LocalDateTime date, String typeOfUser) throws IOException {
 		RegisterOfLoans rl = new RegisterOfLoans(loanfile);
-		int daysToReturn = 0, i, lateLoans=0, loanedBooks=0;
+		int daysToReturn = 0, i, lateLoans=0, loanedBooks=0, loanLimit = 0;
 		Loan aux;
-		boolean rtn = false;
 		
 		for (i=0; i<rl.loans.size(); i++) {
 			aux = rl.loans.get(i);
@@ -97,29 +96,37 @@ public class RegisterOfLoans {
 			} 
 		}
 		
-		if (lateLoans > 0) 
-			return false;
-
 		switch (typeOfUser) {
 			case "Community":
 				daysToReturn = 15;
+				loanLimit = 2;
 				break;
 			case "Student":
 				daysToReturn = 30;
+				loanLimit = 4;
 				break;
 			case "Teacher":
 				daysToReturn = 60;
+				loanLimit = 6;
 				break;
 		}
- 
-		LocalDateTime returnDate = date.plusDays(daysToReturn);
- 
-		BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, true));
-			 
-		out.write (user + "," + book + "," + date + "," + returnDate); 
 		
+		if (lateLoans > 0) {
+			System.out.println ("User has" + lateLoans + "late loans, can't loan book until return");
+			return false;
+		}
+		if (loanedBooks >= loanLimit) {
+			System.out.println("User has reached the limit of" + loanLimit + "loaned books, cannot loan more books");
+			return false;
+		}
+
+		LocalDateTime returnDate = date.plusDays(daysToReturn); 
+		
+		BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, true));
+		out.write (user + "," + book + "," + date + "," + returnDate); 
 		out.close();
 		
-		return rtn;
+		
+		return true;
 	}
 }
