@@ -57,10 +57,10 @@ class Book {
     public boolean loanBook(String typeOfUser) {
         if (typeOfUser.equals("Community") && type.equals("textbook")){
             System.out.println ("This user doesn't have permission to loan this book!!");
-            return true;
+            return false;
         }
         availability = "Unavailable";
-        return false;
+        return true;
     }
     
     public void returnBook() {
@@ -145,7 +145,6 @@ public class RegisterOfBooks {
             aux = rb.books.get(i);
             if (aux.getName().equals(name) && aux.getAvailability().equals("Available")){
                 flag = aux.loanBook (typeOfUser);
-                System.out.println (flag);
                 break;
             }
         }

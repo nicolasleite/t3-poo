@@ -88,11 +88,11 @@ public class Library {
 			String typeOfUser = RegisterOfUsers.getUserType(userfile, user);
 						
 			//if the user doesn't have permission to loan that type of book or the book doesn't exist, loanBook is stopped
-			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser))
+			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser) == false)
 				return;
 
 			//if the user has more loaned books than he's allowed to, loanBook is stopped
-			if (RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser))
+			if (RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser) == false)
 				return;
 
 			System.out.println ("Successful loan!!");

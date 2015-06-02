@@ -56,7 +56,7 @@ class Loan {
 	}
  
 	public String toStringCSV () {
-		return userName + "," + bookName + "," + dateOfLoan + "," + limitDateOfReturning;
+		return userName + "," + bookName + "," + isReturned + "," + dateOfLoan + "," + limitDateOfReturning;
 	}
 }
  
@@ -117,7 +117,7 @@ public class RegisterOfLoans {
 		LocalDate returnDate = date.plusDays(daysToReturn); 
 		
 		BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, true));
-		out.write (user + "," + book + "," + date + "," + returnDate); 
+		out.write (user + "," + book + ",false," + date + "," + returnDate + "\n"); 
 		out.close();
 		
 		
