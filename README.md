@@ -8,7 +8,7 @@ nº USP 8921972
 #Nícolas Bassetto Leite 
 nº USP 8937292
 
-#Funções
+
   #add user
     Registra novo usuário - tipo deve ser "Community", "Student" ou "Teacher"
   #add book
