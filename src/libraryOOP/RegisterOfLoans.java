@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
  
 class Loan {
 	private String userName;
@@ -58,6 +59,10 @@ class Loan {
 	public String toStringCSV () {
 		return userName + "," + bookName + "," + isReturned + "," + dateOfLoan + "," + limitDateOfReturning;
 	}
+
+	public void returnBook() {
+		isReturned = true;		
+	}
 }
  
 public class RegisterOfLoans {
@@ -71,7 +76,7 @@ public class RegisterOfLoans {
 			in = new BufferedReader(new FileReader(loanFile));
 			String csv;
 			while ((csv = in.readLine()) != null) {
-				loans.add(new Loan(csv));
+				if (csv!=null && csv!="") loans.add(new Loan(csv));
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("File " + loanFile + " was not found!");
@@ -124,14 +129,50 @@ public class RegisterOfLoans {
 		return true;
 	}
 
-	public static boolean returnBook(String loanfile, String user, String book) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean returnBook(String loanfile, String user, String book, LocalDate date) throws IOException {
+		RegisterOfLoans rl = new RegisterOfLoans(loanfile);
+		Loan aux;
+		boolean flag=false;
+		
+		for (int i = 0; i<rl.loans.size(); i++) {
+			aux = rl.loans.get(i);
+			if (aux.getUserName().equals(user) && aux.getBookName().equals(book) && !(aux.isReturned())) {
+				aux.returnBook();
+				flag = true;
+				break;
+			} 
+		}
+		
+		if (!flag) {
+			System.out.println ("Loan not found or book has already been returned");
+		} else {
+			BufferedWriter out = new BufferedWriter(new FileWriter(loanfile, false));
+			for (int i = 0; i<rl.loans.size(); i++){
+				aux = rl.loans.get(i);
+				out.write (aux.toStringCSV() + "\n"); 
+			}
+			out.close();
+		}
+		
+		return flag;
 	}
 
-	public static int calcSuspension(String loanfile, String user, String book,
-			LocalDate date) {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int calcSuspension(String loanfile, String user, String book, LocalDate date) {
+		RegisterOfLoans rl = new RegisterOfLoans(loanfile);
+		Loan aux, last=null;
+		int susp = -1, i;
+		
+		for (i=0; i<rl.loans.size(); i++) {
+			aux = rl.loans.get(i);
+			if (aux.getUserName().equals(user) && aux.getBookName().equals(book) && aux.getLimitDate().isBefore(date)) {
+				last = aux;
+			} 
+		}
+		
+		if (last != null) {
+			susp = (int) ChronoUnit.DAYS.between(last.getLimitDate(), date);
+		}
+		
+		return susp;
 	}
 }

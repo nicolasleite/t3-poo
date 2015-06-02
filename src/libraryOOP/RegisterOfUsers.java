@@ -56,6 +56,15 @@ class User {
 	public String toString() {
 		return "Nick: " + nick + "\nType: " + type + "\nLoan: " + dateOfLoan + "\nSuspension:" + punishTime;
 	}
+
+	public String toStringCSV() {
+		return nick + "," + type + "," + dateOfLoan + "," + punishTime + "\n";
+	}
+	
+	public void returnBook(LocalDate date, int suspension) {
+		dateOfLoan = date;
+		punishTime = suspension;
+	}
  
 }
  
@@ -124,8 +133,31 @@ public class RegisterOfUsers {
 		return flag;
 	} 
 
-	public static boolean returnBook(String userfile, String user, LocalDate date, int suspension) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean returnBook(String userfile, String user, LocalDate date, int suspension) throws IOException {
+		RegisterOfUsers ru = new RegisterOfUsers (userfile);
+		int i;
+		User aux;
+		boolean flag = false;
+		
+		for (i=0; i<ru.users.size(); i++) {
+			aux = ru.users.get(i);
+			if (aux.getNick().equals(user)) {
+				flag = true;
+				aux.returnBook(date, suspension);
+				break;
+			}
+		}
+		
+			
+		if (flag) {
+			BufferedWriter out = new BufferedWriter(new FileWriter(userfile, false));
+			for (i=0; i<ru.users.size(); i++) {
+				aux = ru.users.get(i);
+				out.write(aux.toStringCSV());
+			}
+			out.close();
+		}
+		
+		return flag;
 	}
 }

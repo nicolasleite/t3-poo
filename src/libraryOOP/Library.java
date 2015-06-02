@@ -119,7 +119,7 @@ public class Library {
 		
 		try {
 			//if the loan register is not found, stop execution
-			if (RegisterOfLoans.returnBook(loanfile, user, book) == false)
+			if (RegisterOfLoans.returnBook(loanfile, user, book, date) == false)
 				return;
 			
 			//calculate time of suspension of user
