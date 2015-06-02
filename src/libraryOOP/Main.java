@@ -66,10 +66,9 @@ public class Main {
 					cmd ="exit";
 					break;
 
-				//not working
-				/*case "return book":
+				case "return book":
 					lib.returnBook();
-					break;*/
+					break;
 
 				default:
 					System.out.println("Invalid command!!");
