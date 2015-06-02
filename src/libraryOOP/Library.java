@@ -102,19 +102,40 @@ public class Library {
 	}
 
 	//not working 
-/*	public void returnBook() {
+	public void returnBook() {
 		System.out.print("User: ");
 		String user = s.nextLine();
 		System.out.print("Book to be returned: ");
 		String book = s.nextLine();
- 
+		System.out.print("Date (dd/mm/yyyy) [press ENTER to use OS time]: ");
+		String dateString = s.nextLine();
+		
+		
+		LocalDate date;
+		if(dateString.equals(""))
+			date = LocalDate.now();
+		else 
+			date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		
 		try {
-			RegisterOfUsers.returnBook(userfile, user);
-			RegisterOfBooks.returnBook(bookfile, book);
-			RegisterOfLoans.returnBook(loanfile, user, book);
+			//if the loan register is not found, stop execution
+			if (RegisterOfLoans.returnBook(loanfile, user, book) == false)
+				return;
+			
+			//calculate time of suspension of user
+			int suspension = RegisterOfLoans.calcSuspension(loanfile, user, book, date);
+			
+			//if the user has been removed, stop execution
+			if (RegisterOfUsers.returnBook(userfile, user, date, suspension) == false)
+				return;
+			
+			//if the book has been removed, stop execution
+			if (RegisterOfBooks.returnBook(bookfile, book) == false)
+				return;
+			
 			System.out.println ("Successful return!!");
 		} catch (IOException e) {
 			System.out.println ("Unsuccessful return!!");
 		}
-	}*/
+	}
 }

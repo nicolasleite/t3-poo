@@ -124,8 +124,8 @@ public class RegisterOfUsers {
 		return flag;
 	} 
 
-	public static void returnBook(String userfile, String user) {
+	public static boolean returnBook(String userfile, String user, LocalDate date, int suspension) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 }

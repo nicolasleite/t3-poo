@@ -123,4 +123,15 @@ public class RegisterOfLoans {
 		
 		return true;
 	}
+
+	public static boolean returnBook(String loanfile, String user, String book) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static int calcSuspension(String loanfile, String user, String book,
+			LocalDate date) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

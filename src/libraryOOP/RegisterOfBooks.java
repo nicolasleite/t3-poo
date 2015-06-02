@@ -164,31 +164,7 @@ public class RegisterOfBooks {
         return flag;
     }
     
-    public String returnBook (String bookfile, String name, String type) throws IOException {
-        RegisterOfBooks rb = new RegisterOfBooks (bookfile);
-        int i;
-        Book aux;
-        String rtn = "";
-        
-        //false overwrite the file
-        BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));
-    
-        rb.books
-            .stream()
-            .filter(s -> s.getName().equals(name))
-            .findAny()
-            .filter(s -> s.getAvailability().equals("Unavailable"))
-            .ifPresent(s -> s.returnBook());
-          
-		for (i=0; i<rb.books.size(); i++) {
-            aux = rb.books.get(i);
-            out.write(aux.toStringCSV());
-            if (aux.getName().equals(name))
-            	rtn = aux.getType();
-        }
-    
-        out.close();
-         
-        return rtn;
+    public static boolean returnBook (String bookfile, String name) throws IOException {
+    	return false;	
     }
 }
