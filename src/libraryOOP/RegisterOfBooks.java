@@ -1,7 +1,13 @@
 package libraryOOP;
    
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
     
 class Book {
     private String name;
@@ -49,7 +55,7 @@ class Book {
     }
     
     public boolean loanBook(String typeOfUser) {
-        if (typeOfUser == "Community" && type == "textbook"){
+        if (typeOfUser.equals("Community") && type.equals("textbook")){
             System.out.println ("This user doesn't have permission to loan this book!!");
             return true;
         }
@@ -72,7 +78,7 @@ public class RegisterOfBooks {
             in = new BufferedReader (new FileReader(bookfile));
             String csv;
             while ((csv = in.readLine()) != null) {
-                books.add(new Book(csv));
+                if (csv != null) books.add(new Book(csv));
             }
         }
         catch (FileNotFoundException e) {
@@ -85,23 +91,12 @@ public class RegisterOfBooks {
     
     public static void addNewBook(String name, String code, String type, String availability, String bookfile) throws IOException {
           
-        //n�o precisa disso aqui n�o, tava brisando e vai dar erro  
         //books.add(new Book(name, code, type, availability));
             
         BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, true));
         out.write(name + "," + code + "," + type + "," + availability + "\n");
         out.close();
     }
-    
-/*  public void removeBook (String bookfile, String code) {
-        RegisterOfBooks rb = new RegisterOfBooks (bookfile);
-        List<Book> newList =
-            rb.books
-            .stream()
-            .filter(s -> !(s.getCode().equals(code)));
-            .collect(Collectors.toList());
-    
-    }*/
     
     public static void printEverything (String bookfile) {
         RegisterOfBooks rb = new RegisterOfBooks (bookfile);
@@ -146,20 +141,11 @@ public class RegisterOfBooks {
         boolean flag = false;
         Book aux;
   
-/*      //false overwrite the file
-        BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));*/
-    
-/*      rb.books
-            .stream()
-            .filter(s -> s.getName().equals(name))
-            .findAny()
-            .filter(s -> s.getAvailability().equals("Available"))
-//Error     .ifPresent(s -> (flag = s.loanBook(typeOfUser)));    */
-    
         for (i=0; i<rb.books.size(); i++) {
             aux = rb.books.get(i);
-            if (aux.getName() == name && aux.getAvailability() == "Available"){
+            if (aux.getName().equals(name) && aux.getAvailability().equals("Available")){
                 flag = aux.loanBook (typeOfUser);
+                System.out.println (flag);
                 break;
             }
         }
@@ -172,6 +158,8 @@ public class RegisterOfBooks {
                 out.write(aux.toStringCSV());
             }
             out.close();
+        } else {
+        	System.out.println ("Book not found or unavailable");
         }
  
         return flag;
@@ -196,7 +184,7 @@ public class RegisterOfBooks {
 		for (i=0; i<rb.books.size(); i++) {
             aux = rb.books.get(i);
             out.write(aux.toStringCSV());
-            if (aux.getName() == name)
+            if (aux.getName().equals(name))
             	rtn = aux.getType();
         }
     

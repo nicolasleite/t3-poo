@@ -62,6 +62,9 @@ public class Main {
 				case "loan book":
 					lib.loanBook();
 					break;
+				case "exit":
+					cmd ="exit";
+					break;
 
 				//not working
 				/*case "return book":
@@ -70,8 +73,8 @@ public class Main {
 
 				default:
 					System.out.println("Invalid command!!");
-			} 
-		} while (cmd != "exit");
+			}
+		}while (cmd != "exit");
 		
 		System.out.println ("Finished execution");
 	}

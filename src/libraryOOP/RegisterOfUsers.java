@@ -1,19 +1,25 @@
 package libraryOOP;
  
-import java.time.LocalDateTime;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
  
  
 class User {
  
 	private String nick;
 	private String type;
-	private LocalDateTime dateOfLoan;
+	private LocalDate dateOfLoan;
 	private int punishTime;
 	 
-	public User(String nick, String type, LocalDateTime dateOfLoan, int punishTime) {
+	public User(String nick, String type, LocalDate dateOfLoan, int punishTime) {
 		this.nick = nick;
 		this.type = type;
 		this.dateOfLoan = dateOfLoan;
@@ -22,11 +28,12 @@ class User {
 	 
 	public User(String csv){
 		String[] values = csv.split(",");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'/'MM'/'yy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
  
 		nick = values[0];
 		type = values[1];
-		dateOfLoan = LocalDateTime.parse(values[2], formatter);
+		
+		dateOfLoan = LocalDate.parse(values[2], formatter);
 		punishTime = Integer.parseInt(values[3]);
 	}
  
@@ -38,7 +45,7 @@ class User {
 		return type;
 	}
 	 
-	public LocalDateTime getDateOfLoan () {
+	public LocalDate getDateOfLoan () {
 		return dateOfLoan;
 	}
 	 
@@ -86,14 +93,9 @@ public class RegisterOfUsers {
 		User aux;
 		String type = "";
 
-		/*ru.users
-			.stream ()
-			.filter (s -> s.getNick().equals(user))
-/*Error 	.ifPresent (s -> return s.getType());*/
-
 		for (i=0; i<ru.users.size(); i++) {
 			aux = ru.users.get(i);
-			if (aux.getNick() == user){
+			if (aux.getNick().equals(user)){
 				type = aux.getType();
 				break;
 			}
@@ -102,36 +104,25 @@ public class RegisterOfUsers {
 		return type;
 	}
 
-	public static boolean loanBook (String userfile, String user, String book, LocalDateTime date) {
+	public static boolean loanBook (String userfile, String user, String book, LocalDate date) {
 		RegisterOfUsers ru = new RegisterOfUsers (userfile);
 		int i;
 		User aux;
 		boolean flag = false;
 
-		/*ru.users
-			.stream ()
-			.filter (s -> s.getNick().equals(user))
-/*erro/		.ifNotPresent (return false)
-			.filter (s -> date.isAfter(s.getDateOfLoan.plusDays(s.getPunishTime())))
-/*erro* 	.ifNotPresent (return false);*/
-
 		for (i=0; i<ru.users.size(); i++) {
 			aux = ru.users.get(i);
-			if (aux.getNick() == user && date.isAfter(aux.getDateOfLoan().plusDays(aux.getPunishTime()))) {
+			if (aux.getNick().equals(user) && date.isAfter(aux.getDateOfLoan().plusDays(aux.getPunishTime()))) {
 				flag = true;
 				break;
 			}
 		}
+		
+		if (!flag) 
+			System.out.println("User not found or in period of suspension");
 
 		return flag;
 	} 
-/*
-static addNewUser
-public static void main(String[] args) throws IOException, FileNotFoundException {
-	//String usefile = "users.csv";
-	RegisterOfUsers.addNewUser("NickTest", "TypeTest", "users.csv");
-}
-*/
 
 	public static void returnBook(String userfile, String user) {
 		// TODO Auto-generated method stub

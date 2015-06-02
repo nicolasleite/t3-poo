@@ -1,9 +1,9 @@
 package libraryOOP;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.io.*;
+import java.util.Scanner;
 
 public class Library {
 	String bookfile;
@@ -23,7 +23,7 @@ public class Library {
 		String name = s.nextLine();
 		System.out.print ("Type: ");
 		String type = s.nextLine();
-		RegisterOfUsers.addNewUser(name, type, "01/01/00", "0", userfile);
+		RegisterOfUsers.addNewUser(name, type, "1971-01-01", "0", userfile);
 	}
  
 	public void newBook() {
@@ -59,7 +59,7 @@ public class Library {
 				RegisterOfBooks.searchBookByCode(bookfile, argument);
 				break;
 			default:
-				System.out.println ("Invalid option!! Usage: (C)ode or (N)ame!!");
+				System.out.println ("Invalid option!! Usage: (-c)ode or (-n)ame!!");
 				return;
 		}
 		System.out.println("Search completed!!");
@@ -70,37 +70,30 @@ public class Library {
 		String user = s.nextLine();
 		System.out.print("Desired book: ");
 		String book = s.nextLine();
-		System.out.print("Date (dd/mm/yy) [press ENTER to use OS time]: ");
+		System.out.print("Date (dd/mm/yyyy) [press ENTER to use OS time]: ");
 		String dateString = s.nextLine();
  
-		LocalDateTime date;
-		switch (dateString) {
-			case "":
-				date = LocalDateTime.now();
-				break;
-			default:
-				date = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("dd'/'MM'/'yy"));
-				break;
-		}
+		LocalDate date;
+		if(dateString.equals(""))
+			date = LocalDate.now();
+		else 
+			date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
  
 		try{    
 			//if the user is on period of suspension or doesn't exist loanBook() is stopped 
-			if (RegisterOfUsers.loanBook (userfile, user, book, date) == false){
+			if (RegisterOfUsers.loanBook (userfile, user, book, date) == false)
 				return;
-			}
-
-			//returns the type of the user
-			String typeOfUser = RegisterOfUsers.getUserType(userfile, user);
 			
+			//returns the type of the user and if has no type stop execution
+			String typeOfUser = RegisterOfUsers.getUserType(userfile, user);
+						
 			//if the user doesn't have permission to loan that type of book or the book doesn't exist, loanBook is stopped
-			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser)){
+			if (RegisterOfBooks.loanBook(bookfile, book, typeOfUser))
 				return;
-			}
 
 			//if the user has more loaned books than he's allowed to, loanBook is stopped
-			if (RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser)){
+			if (RegisterOfLoans.loanBook(loanfile, user, book, date, typeOfUser))
 				return;
-			}
 
 			System.out.println ("Successful loan!!");
 		} catch (IOException e) {
