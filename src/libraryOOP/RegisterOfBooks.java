@@ -165,6 +165,35 @@ public class RegisterOfBooks {
     }
     
     public static boolean returnBook (String bookfile, String name) throws IOException {
-    	return false;	
+    	RegisterOfBooks rb = new RegisterOfBooks (bookfile);
+        int i;
+        boolean flag = false;
+        
+        Book aux;
+        
+        for (i=0; i<rb.books.size(); i++) {
+            aux = rb.books.get(i);
+            if (aux.getName().equals(name)){
+                aux.returnBook();
+                flag = true;
+                break;
+            }
+        }
+        
+        if (!flag){
+        	System.out.println("Book has been removed");
+        	return flag;
+        }
+        	
+        
+        //false overwrite the file
+        BufferedWriter out = new BufferedWriter(new FileWriter(bookfile, false));
+        for (i=0; i<rb.books.size(); i++) {
+            aux = rb.books.get(i);
+            out.write(aux.toStringCSV());
+        }
+        out.close();
+        
+        return flag;
     }
 }
